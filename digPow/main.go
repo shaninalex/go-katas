@@ -5,12 +5,12 @@ import (
 	"math"
 )
 
-func getDigits(number int) []int {
-	var digits []int
+func getDigits(number int) []float64 {
+	var digits []float64
 
 	for number > 0 {
 		d := number % 10
-		digits = append(digits, d)
+		digits = append(digits, float64(d))
 		number /= 10
 	}
 
@@ -22,18 +22,19 @@ func getDigits(number int) []int {
 }
 
 func DigPow(n, p int) int {
-	digits := getDigits(n)
+	total := 0
+	e := float64(p)
 
-	res := 0
-	for i, c := 0, p; i < len(digits); i, c = i+1, c+1 {
-		res += int(math.Pow(float64(digits[i]), float64(c)))
+	for _, digit := range getDigits(n) {
+		total += int(math.Pow(digit, e))
+		e++
 	}
 
-	out := res / n
-	if out > 0 {
-		return out
+	if total%n == 0 {
+		return total / n
+	} else {
+		return -1
 	}
-	return -1
 }
 
 func main() {
